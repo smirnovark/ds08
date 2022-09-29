@@ -16,19 +16,18 @@ class weath:
         longitude = float(geolocator.geocode(self.city).longitude)
         url = f'https://api.weather.yandex.ru/v2/forecast/?lat={latitude}&lon={longitude}'
         headers = {'X-Yandex-API-Key': 'cfc1d734-25f1-4b4e-8f0b-d5225d8eff00'}
-        conditions = {'clear': 'ясно', 'partly-cloudy': 'малооблачно', 'cloudy': 'облачно с прояснениями',
-                      'overcast': 'пасмурно', 'drizzle': 'морось', 'light-rain': 'небольшой дождь',
-                      'rain': 'дождь', 'moderate-rain': 'умеренно сильный', 'heavy-rain': 'сильный дождь',
-                      'continuous-heavy-rain': 'длительный сильный дождь', 'showers': 'ливень',
-                      'wet-snow': 'дождь со снегом', 'light-snow': 'небольшой снег', 'snow': 'снег',
-                      'snow-showers': 'снегопад', 'hail': 'град', 'thunderstorm': 'гроза',
-                      'thunderstorm-with-rain': 'дождь с грозой', 'thunderstorm-with-hail': 'гроза с градом'
+        conditions = {'clear': 'Ясно', 'partly-cloudy': 'Малооблачно', 'cloudy': 'Облачно с прояснениями',
+                      'overcast': 'Пасмурно', 'drizzle': 'Морось', 'light-rain': 'Небольшой дождь',
+                      'rain': 'Дождь', 'moderate-rain': 'Умеренно сильный', 'heavy-rain': 'Сильный дождь',
+                      'continuous-heavy-rain': 'Длительный сильный дождь', 'showers': 'Ливень',
+                      'wet-snow': 'Дождь со снегом', 'light-snow': 'Небольшой снег', 'snow': 'Снег',
+                      'snow-showers': 'Снегопад', 'hail': 'Град', 'thunderstorm': 'Гроза',
+                      'thunderstorm-with-rain': 'Дождь с грозой', 'thunderstorm-with-hail': 'Гроза с градом'
                       }
-        wind_dir = {'nw': 'северо-западное', 'n': 'северное', 'ne': 'северо-восточное', 'e': 'восточное',
-                    'se': 'юго-восточное', 's': 'южное', 'sw': 'юго-западное', 'w': 'западное', 'с': 'штиль'}
+        wind_dir = {'nw': 'северо-западный', 'n': 'северный', 'ne': 'северо-восточный', 'e': 'восточный',
+                    'se': 'юго-восточный', 's': 'южный', 'sw': 'юго-западный', 'w': 'западный', 'с': 'штиль'}
         r = requests.get(url=url, headers=headers)
         data = json.loads(r.text)
-        #fact = data['fact']
         data['fact']['condition'] = conditions[data['fact']['condition']]
         data['fact']['wind_dir'] = wind_dir[data['fact']['wind_dir']]
 
@@ -48,6 +47,16 @@ def get_city(message):
 def get_weather(message):
     weather = weath(message.text)
     user_weather = weather.get_weather()
-    bot.send_message(message.chat.id, f'{user_weather} город герой!')
+    bot.send_message(message.chat.id,
+                     f'Температура воздуха: {user_weather[0]}°С\n'
+                     f'Ощущается как: {user_weather[1]}°С\n'
+                     f'{user_weather[2]}\n'
+                     f'Атмосферное давление: {user_weather[3]}мм\n'
+                     f'Влажность воздуха: {user_weather[4]}%\n'
+                     f'Ветер: {user_weather[5]}, {user_weather[6]}м/с\n')
+
+    bot.send_message(message.chat.id, 'Введите еще город')
+    bot.register_next_step_handler(message, get_weather)
+
 
 bot.polling(none_stop=True)
