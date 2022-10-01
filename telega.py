@@ -14,7 +14,7 @@ class weath:
         geolocator = geopy.geocoders.Nominatim(user_agent="telebot")
         latitude = float(geolocator.geocode(self.city).latitude)
         longitude = float(geolocator.geocode(self.city).longitude)
-        url = f'https://api.weather.yandex.ru/v2/forecast/?lat={latitude}&lon={longitude}'
+        url = f'https://api.weather.yandex.ru/v2/forecast/?lat={latitude}&lon={longitude}' #-----Если не работает заменить forecast на informers
         headers = {'X-Yandex-API-Key': 'cfc1d734-25f1-4b4e-8f0b-d5225d8eff00'}
         conditions = {'clear': 'Ясно', 'partly-cloudy': 'Малооблачно', 'cloudy': 'Облачно с прояснениями',
                       'overcast': 'Пасмурно', 'drizzle': 'Морось', 'light-rain': 'Небольшой дождь',
