@@ -1,4 +1,3 @@
-
 import requests
 import json
 import geopy
@@ -6,7 +5,7 @@ import urllib3
 
 urllib3.disable_warnings()
 
-city = 'Москва'
+city = 'Санкт_Петербург Ветеранов 169к2'
 
 
 def geo_pos(city: str):
@@ -15,11 +14,14 @@ def geo_pos(city: str):
     longitude = float(geolocator.geocode(city).longitude)
     return latitude, longitude
 
-latitude, longitude = geo_pos(city)
-#print(geo_pos(city))
+print(geo_pos(city))
 
-#def weath(latitude, longitude):
-url = f'https://api.weather.yandex.ru/v2/forecast/?lat={latitude}&lon={longitude}'
+latitude, longitude = geo_pos(city)
+
+print(geo_pos(city))
+
+
+url = f'https://api.weather.yandex.ru/v2/forecast/?lat={latitude}&lon={longitude}& [lang="ru"]'
 headers = {'X-Yandex-API-Key': 'cfc1d734-25f1-4b4e-8f0b-d5225d8eff00'}
 conditions = {'clear': 'ясно', 'partly-cloudy': 'малооблачно', 'cloudy': 'облачно с прояснениями',
               'overcast': 'пасмурно', 'drizzle': 'морось', 'light-rain': 'небольшой дождь',
@@ -37,10 +39,11 @@ fact = data['fact']
 data['fact']['condition'] = conditions[data['fact']['condition']]
 data['fact']['wind_dir'] = wind_dir[data['fact']['wind_dir']]
 
-print('Температура воздуха', data['fact']['temp'], '°С,', 'ощущается как', data['fact']['feels_like'], '°С.',
-        'На улице', data['fact']['condition'], '.', 'Атмосферное давление', data['fact']['pressure_mm'], 'мм.',
-        'Влажность воздуха', data['fact']['humidity'], '%.', 'Направление ветра', data['fact']['wind_dir'],
-        data['fact']['wind_speed'], 'м/с.')
+print(data)
+# print('Температура воздуха', data['fact']['temp'], '°С,', 'ощущается как', data['fact']['feels_like'], '°С.',
+#         'На улице', data['fact']['condition'], '.', 'Атмосферное давление', data['fact']['pressure_mm'], 'мм.',
+#         'Влажность воздуха', data['fact']['humidity'], '%.', 'Направление ветра', data['fact']['wind_dir'],
+#         data['fact']['wind_speed'], 'м/с.')
 
 
 
