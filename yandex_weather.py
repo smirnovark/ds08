@@ -6,7 +6,7 @@ import requests
 from typing import Dict
 import geopy
 from dotenv import load_dotenv
-from attrs import define
+#from attrs import define
 from config import CONDITION2RU, WIND2RU
 
 load_dotenv()
@@ -37,22 +37,26 @@ class YandexWeather:
         return result
 
 
-@define
-class Weather:
-    def get_weather(self, massage):
-        y_weather = YandexWeather(os.getenv("YANDEX_KEY"))
-        weather = y_weather.get_yandex_weather(massage)
-        mess = (f"Температура воздуха: {weather['temp']}°C\n"
-                f"Ощущается как: {weather['feels_like']}°C\n"
-                f"{weather['condition']}\n"
-                f"Атмосферное давление: {weather['pressure_mm']}мм\n"
-                f"Влажность воздуха: {weather['humidity']}%\n"
-                f"Ветер: {weather['wind_dir']}, {weather['wind_speed']}м/с\n")
-        return mess
+# @define
+# class Weather:
+#     def get_weather(self, massage):
+#         y_weather = YandexWeather(os.getenv("YANDEX_KEY"))
+#         weather = y_weather.get_yandex_weather(massage)
+#         mess = (f"Температура воздуха: {weather['temp']}°C\n"
+#                 f"Ощущается как: {weather['feels_like']}°C\n"
+#                 f"{weather['condition']}\n"
+#                 f"Атмосферное давление: {weather['pressure_mm']}мм\n"
+#                 f"Влажность воздуха: {weather['humidity']}%\n"
+#                 f"Ветер: {weather['wind_dir']}, {weather['wind_speed']}м/с\n")
+#         return mess
 
 
 
 if __name__ == '__main__':
-    message = 'Санкт-Петербург'
-    user_weather = Weather()
-    print(user_weather.get_weather(message))
+    weather = YandexWeather(os.getenv("YANDEX_KEY"))
+    user_weather = weather.get_yandex_weather('Москва')
+    print(user_weather)
+
+    # message = 'Санкт-Петербург'
+    # user_weather = Weather()
+    # print(user_weather.get_weather(message))
